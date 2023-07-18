@@ -7,7 +7,7 @@ export default function Home() {
 
       <form>
         <div className="input-box">
-          <label htmlFor="term-label"></label>
+          <label htmlFor="term-label">Term</label>
           <input
             type="text"
             className="term-input"
@@ -16,15 +16,30 @@ export default function Home() {
           />
         </div>
 
-        <div className="input-box">
+        <div className="input-box area">
           <label htmlFor="term-label"></label>
-          <input
-            type="text"
-            className="term-input"
+          <textarea
+            // type="text-area"
+            className="term-input text-area"
+            rows={7}
             required
             placeholder="Description"
           />
         </div>
+
+        <div className="input-box">
+        <label htmlFor="term-label"></label>
+        <input className="term-input" list="categories" name="browser" placeholder="Category"/>
+          <datalist id="categories">
+            <option value="Javascript"></option>
+            <option value="VSCODE"></option>
+            <option value="NextJs"></option>
+            <option value="Node"></option>
+            <option value="General Terms"></option>
+          </datalist>
+        
+        </div>
+
       </form>
     </>
   );

@@ -19,18 +19,36 @@ gap: 2rem;
 .input-box {
 position: relative;
 width: 300px;
-padding-bottom: 1rem;
+padding: 1rem 0;
 }
 
 .term-input {
 width: 100%;
-padding: 1rem 0;
+padding-top: 1rem;
 border: none;
 border-bottom: .1rem solid #ccc;
+/* border: .1rem solid #ccc; */
 outline: none;
 background: transparent;
 color: #fff;
 font-size: 1.8rem;
+}
+
+.text-area {
+  font-size: 1rem;
+}
+
+/* .term-label {
+  position: absolute;
+  left: 0;
+  padding: 10px 5px;
+  color: white;
+  font-size: 1.4rem;
+} */
+
+.term-input::placeholder {
+  padding: 1rem 0;
+  font-size: 1.8rem;
 }
 
 .term-input:focus::placeholder {
