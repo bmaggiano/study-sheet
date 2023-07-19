@@ -163,7 +163,7 @@ export default function Home() {
 
   return (
     <>
-      <h1 className="text-white bg-black p-2">Brandon's Study Guide</h1>
+      <h1 className="text-white bg-black p-2">Brandon&apos;s Study Guide</h1>
 
       <div className="tableContainer">
         {/* <p className="text-white" key={data.term}>{data.term}</p> */}
