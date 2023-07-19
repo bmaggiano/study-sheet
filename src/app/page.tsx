@@ -1,11 +1,12 @@
 "use client";
-import { SetStateAction, useState } from "react";
+import { SetStateAction, useEffect, useState } from "react";
 import Image from "next/image";
 
 export default function Home() {
   const [term, setTerm] = useState("");
   const [description, setDescription] = useState("");
   const [category, setCategory] = useState("");
+  const [readableForm, setReadableForm] = useState([])
 
   const handleTermChange = (e: { target: { value: SetStateAction<string>; }; }) => {
     setTerm(e.target.value);
@@ -18,6 +19,20 @@ export default function Home() {
   const handleCategoryChange = (e: { target: { value: SetStateAction<string>; }; }) => {
     setCategory(e.target.value);
   };
+
+  useEffect(() => {
+    fetch("/api/readFormData", {
+      method: "GET"
+    })
+    .then((response) => response.json())
+    .then(([formData]) => {
+      console.log([formData.term])
+      setReadableForm(formData.term)
+    })
+    .catch((error) => {
+      console.error("Error fetching data:", error);
+    });
+  })
 
   const handleSubmit = (e: { preventDefault: () => void; }) => {
     e.preventDefault();
@@ -41,6 +56,9 @@ export default function Home() {
   return (
     <>
       <h1 className="text-white">Brandon's Study Guide</h1>
+
+    <h2 className="text-white">{readableForm}</h2>
+
       <div className="page-container">
         <div>
           <Image alt="notebook" src="/notebook.png" width={400} height={400} />
