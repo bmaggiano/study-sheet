@@ -3,9 +3,16 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import fs from "fs";
 
+const PASSWORD = process.env.PASSWORD; // Replace this with your actual password or store it securely in environment variables
+
 export default function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method === "POST") {
-    const { term, description, category } = req.body;
+    const { term, description, category, password } = req.body;
+
+    if (password !== PASSWORD) {
+      // Password is incorrect, return an error response
+      return res.status(401).json({ error: "Incorrect password" });
+    }
 
     // Read existing data from the file (if any)
     let existingData = [];

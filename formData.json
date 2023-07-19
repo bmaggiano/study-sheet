@@ -1,1 +1,14 @@
-[{"term":".env","description":"a .env file is something that you create in your app to store sensitive environment variables. For example, if I wanted to store an API key to make an API call, I would place it in there, make sure it's gitignored, and reference it by using process.env.API_KEY","category":"General Terms","timestamp":"2023-07-19T17:30:08.078Z"}]
+[
+  {
+    "term": ".env",
+    "description": "a .env file is something that you create in your app to store sensitive environment variables. For example, if I wanted to store an API key to make an API call, I would place it in there, make sure it's gitignored, and reference it by using process.env.API_KEY",
+    "category": "General Terms",
+    "timestamp": "2023-07-19T17:30:08.078Z"
+  },
+  {
+    "term": "test",
+    "description": "test",
+    "category": "General Terms",
+    "timestamp": "2023-07-19T21:52:46.935Z"
+  }
+]
