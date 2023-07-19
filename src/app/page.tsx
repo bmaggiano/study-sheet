@@ -14,11 +14,6 @@ export default function Home() {
   const [description, setDescription] = useState("");
   const [category, setCategory] = useState("");
   const [readableForm, setReadableForm] = useState<FormDataItem[]>([]); // Set the type for readableForm as FormDataItem[]
-  const [passwordInput, setPasswordInput] = useState(""); // New state for password input
-
-  const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setPasswordInput(e.target.value);
-  };
 
   const handleTermChange = (e: { target: { value: SetStateAction<string>; }; }) => {
     setTerm(e.target.value);
@@ -49,7 +44,7 @@ export default function Home() {
   const handleSubmit = (e: { preventDefault: () => void; }) => {
     e.preventDefault();
   
-    const enteredPassword = prompt("Please enter a password");
+    const enteredPassword = prompt("What's the magic word?");
   
     fetch("/api/saveFormData", {
       method: "POST",
@@ -84,20 +79,30 @@ export default function Home() {
   
 
   const handleDelete = (termToDelete: string) => {
+
+    const enteredPassword = prompt("What's the magic word?");
+
     fetch("/api/deleteFormData", {
       method: "DELETE",
-      body: JSON.stringify({ term: termToDelete }),
+      body: JSON.stringify({ term: termToDelete, password: enteredPassword }),
       headers: {
         "Content-Type": "application/json",
       },
     })
-      .then((response) => response.json())
+      .then((response) => {
+        if(response.ok) {
+          return response.json()
+        } else {
+          throw new Error("Password validation failed")
+        }
+      })
       .then((data) => {
         // Update the state with the updated form data after deletion
         setReadableForm(data);
       })
       .catch((error) => {
         console.error("Error deleting data:", error);
+        window.alert("Incorrect password or form submission failed. Please try again.");
       });
   };
 
@@ -170,17 +175,6 @@ export default function Home() {
                 <option value="General Terms"></option>
               </datalist>
             </div>
-
-            {/* <div className="input-box">
-              <input
-                type="password"
-                className="term-input"
-                value={passwordInput}
-                onChange={handlePasswordChange}
-                required
-              />
-              <label className="term-label">Password</label>
-            </div> */}
 
             <div className="submit-container">
               <input className="submit" type="submit" />
