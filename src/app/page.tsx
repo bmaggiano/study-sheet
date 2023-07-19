@@ -60,6 +60,24 @@ export default function Home() {
       });
   };
 
+  const handleDelete = (termToDelete) => {
+    fetch("/api/deleteFormData", {
+      method: "DELETE",
+      body: JSON.stringify({ term: termToDelete }),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        // Update the state with the updated form data after deletion
+        setReadableForm(data);
+      })
+      .catch((error) => {
+        console.error("Error deleting data:", error);
+      });
+  };
+
   return (
     <>
       <h1 className="text-white">Brandon's Study Guide</h1>
@@ -72,6 +90,8 @@ export default function Home() {
               <th>Term</th>
               <th>Description</th>
               <th>Category</th>
+              <th>Edit</th>
+              <th>Delete</th>
             </tr>
           </thead>
           <tbody>
@@ -80,6 +100,10 @@ export default function Home() {
               <td>{data.term}</td>
               <td>{data.description}</td>
               <td>{data.category}</td>
+              <td>Edit</td>
+              <td>
+              <button onClick={() => handleDelete(data.term)}>Delete</button>
+                </td>
             </tr>
       ))}
       </tbody>

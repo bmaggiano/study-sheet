@@ -12,6 +12,19 @@ letter-spacing: .1rem;
 gap: 2rem;
 }
 
+button {
+  padding: .5rem;
+  background-color: #ddd;
+  border: none;
+  border-radius: 1rem;
+  color: black;
+}
+
+button:hover {
+  font-weight: bold;
+  transition: .1s;
+}
+
 .page-container {
   display: flex;
   align-items: center;
@@ -22,12 +35,13 @@ gap: 2rem;
 table {
   color: white;
   border-collapse: collapse;
+  width: 60rem;
 }
 
 th, td {
   padding: .5rem;
   text-align: left;
-  white-space: nowrap;
+  /* white-space: nowrap; */
 }
 td {
   border-top: 1px solid #ddd;
