@@ -14,22 +14,38 @@ export default function Home() {
   const [description, setDescription] = useState("");
   const [category, setCategory] = useState("");
   const [readableForm, setReadableForm] = useState<FormDataItem[]>([]); // Set the type for readableForm as FormDataItem[]
+  const [editingItem, setEditingItem] = useState<FormDataItem | null>(null);
 
-  const handleTermChange = (e: { target: { value: SetStateAction<string>; }; }) => {
+  const handleEdit = (item: FormDataItem) => {
+    setEditingItem(item);
+    setTerm(item.term);
+    setDescription(item.description);
+    setCategory(item.category);
+  };
+
+  const handleTermChange = (e: {
+    target: { value: SetStateAction<string> };
+  }) => {
     setTerm(e.target.value);
   };
 
-  const handleDescriptionChange = (e: { target: { value: SetStateAction<string>; }; }) => {
+  const handleDescriptionChange = (e: {
+    target: { value: SetStateAction<string> };
+  }) => {
     setDescription(e.target.value);
   };
 
-  const handleCategoryChange = (e: { target: { value: SetStateAction<string>; }; }) => {
-    setCategory(e.target.value);
+  const handleCategoryChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    // Check if the selected value is empty (no specific category selected)
+    const selectedCategory = e.target.value === "" ? "" : e.target.value;
+    setCategory(selectedCategory);
   };
+  
+  
 
   useEffect(() => {
     fetch("/api/readFormData", {
-      method: "GET"
+      method: "GET",
     })
       .then((response) => response.json())
       .then((formDataArray) => {
@@ -39,21 +55,89 @@ export default function Home() {
         console.error("Error fetching data:", error);
       });
   });
-  
 
-  const handleSubmit = (e: { preventDefault: () => void; }) => {
+  const handleSubmit = (e: { preventDefault: () => void }) => {
     e.preventDefault();
-  
+
     const enteredPassword = prompt("What's the magic word?");
-  
-    fetch("/api/saveFormData", {
-      method: "POST",
-      body: JSON.stringify({
-        term,
-        description,
-        category,
-        password: enteredPassword, // Pass the entered password as a separate property
-      }),
+
+    const formData = {
+      term,
+      description,
+      category,
+      password: enteredPassword, // Pass the entered password as a separate property
+    };
+
+    if (editingItem) {
+      // Update existing item
+      formData.term = term;
+      formData.description = description;
+      formData.category = category;
+
+      fetch(`/api/updateFormData/${editingItem.term}`, {
+        method: "PUT",
+        body: JSON.stringify(formData),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      })
+        .then((response) => {
+          if (response.ok) {
+            return response.json();
+          } else {
+            throw new Error("Password validation failed");
+          }
+        })
+        .then((data) => {
+          console.log(data);
+          setEditingItem(null);
+          setCategory("");
+          setDescription("");
+          setTerm("");
+        })
+        .catch((error) => {
+          console.error("Error:", error.message);
+          window.alert(
+            "Incorrect password or form submission failed. Please try again."
+          );
+        });
+    } else {
+      // Create new item
+      fetch("/api/saveFormData", {
+        method: "POST",
+        body: JSON.stringify(formData),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      })
+        .then((response) => {
+          if (response.ok) {
+            return response.json();
+          } else {
+            throw new Error("Password validation failed");
+          }
+        })
+        .then((data) => {
+          console.log(data);
+          setCategory("");
+          setDescription("");
+          setTerm("");
+        })
+        .catch((error) => {
+          console.error("Error:", error.message);
+          window.alert(
+            "Incorrect password or form submission failed. Please try again."
+          );
+        });
+    }
+  };
+
+  const handleDelete = (termToDelete: string) => {
+    const enteredPassword = prompt("What's the magic word?");
+
+    fetch("/api/deleteFormData", {
+      method: "DELETE",
+      body: JSON.stringify({ term: termToDelete, password: enteredPassword }),
       headers: {
         "Content-Type": "application/json",
       },
@@ -66,43 +150,14 @@ export default function Home() {
         }
       })
       .then((data) => {
-        console.log(data);
-        setCategory("");
-        setDescription("");
-        setTerm(""); // You can handle the response accordingly
-      })
-      .catch((error) => {
-        console.error("Error:", error.message);
-        window.alert("Incorrect password or form submission failed. Please try again.");
-      });
-  };
-  
-
-  const handleDelete = (termToDelete: string) => {
-
-    const enteredPassword = prompt("What's the magic word?");
-
-    fetch("/api/deleteFormData", {
-      method: "DELETE",
-      body: JSON.stringify({ term: termToDelete, password: enteredPassword }),
-      headers: {
-        "Content-Type": "application/json",
-      },
-    })
-      .then((response) => {
-        if(response.ok) {
-          return response.json()
-        } else {
-          throw new Error("Password validation failed")
-        }
-      })
-      .then((data) => {
         // Update the state with the updated form data after deletion
         setReadableForm(data);
       })
       .catch((error) => {
         console.error("Error deleting data:", error);
-        window.alert("Incorrect password or form submission failed. Please try again.");
+        window.alert(
+          "Incorrect password or form submission failed. Please try again."
+        );
       });
   };
 
@@ -118,27 +173,29 @@ export default function Home() {
               <th>Term</th>
               <th>Description</th>
               <th>Category</th>
-              <th>Edit</th>
-              <th>Delete</th>
+              <th className="text-center">Edit</th>
+              <th className="text-center">Delete</th>
             </tr>
           </thead>
           <tbody>
-      {readableForm.map((data) => (
-            <tr key={data.term}>
-              <td>{data.term}</td>
-              <td>{data.description}</td>
-              <td>{data.category}</td>
-              <td>
-                <button>Edit</button>
+            {readableForm.map((data) => (
+              <tr key={data.term}>
+                <td>{data.term}</td>
+                <td>{data.description}</td>
+                <td>{data.category}</td>
+                <td>
+                  <button onClick={() => handleEdit(data)}>Edit</button>
                 </td>
-              <td>
-              <button onClick={() => handleDelete(data.term)}>Delete</button>
+                <td>
+                  <button onClick={() => handleDelete(data.term)}>
+                    Delete
+                  </button>
                 </td>
-            </tr>
-      ))}
-      </tbody>
-    </table>
-    </div>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
 
       <div className="page-container">
         <div>
@@ -148,32 +205,38 @@ export default function Home() {
         <div>
           <form onSubmit={handleSubmit}>
             <div className="input-box">
-              <input type="text" className="term-input" value={term} onChange={handleTermChange} required />
+              <input
+                type="text"
+                className="term-input"
+                value={term}
+                onChange={handleTermChange}
+                required
+              />
               <label className="term-label">Term</label>
             </div>
 
             <div className="input-box area">
-              <textarea className="term-input text-area" rows={7} value={description} onChange={handleDescriptionChange} required />
+              <textarea
+                className="term-input text-area"
+                rows={7}
+                value={description}
+                onChange={handleDescriptionChange}
+                required
+              />
               <label className="term-label">Description</label>
             </div>
 
             <div className="input-box">
-              <input
-                className="term-input"
-                list="categories"
-                name="categories"
-                value={category}
-                onChange={handleCategoryChange}
-                required
-              />
+              <select className="term-input pb-2" required onChange={handleCategoryChange} value={category || ""}>
+              <option value="" disabled selected hidden></option>
+                <option value="General Terms">General Terms</option>
+                <option value="Javascript">Javascript</option>
+                <option value="Vscode">Vscode</option>
+                <option value="NextJs">NextJs</option>
+                <option value="Node">Node</option>
+                <option value="Other">Other</option>
+              </select>
               <label className="term-label">Category</label>
-              <datalist id="categories">
-                <option value="Javascript"></option>
-                <option value="VSCODE"></option>
-                <option value="NextJs"></option>
-                <option value="Node"></option>
-                <option value="General Terms"></option>
-              </datalist>
             </div>
 
             <div className="submit-container">
