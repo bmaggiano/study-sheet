@@ -228,7 +228,7 @@ export default function Home() {
 
             <div className="input-box">
               <select className="term-input pb-2" required onChange={handleCategoryChange} value={category || ""}>
-              <option value="" disabled selected hidden></option>
+              <option value="" disabled hidden></option>
                 <option value="General Terms">General Terms</option>
                 <option value="Javascript">Javascript</option>
                 <option value="Vscode">Vscode</option>
