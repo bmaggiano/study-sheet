@@ -1,3 +1,4 @@
+"use client";
 import Image from "next/image";
 
 export default function Home() {
@@ -7,29 +8,31 @@ export default function Home() {
 
       <form>
         <div className="input-box">
-          <label htmlFor="term-label">Term</label>
           <input
             type="text"
             className="term-input"
             required
-            placeholder="Term"
           />
+          <label className="term-label">Term</label>
         </div>
 
         <div className="input-box area">
-          <label htmlFor="term-label"></label>
           <textarea
-            // type="text-area"
             className="term-input text-area"
             rows={7}
             required
-            placeholder="Description"
           />
+          <label className="term-label">Description</label>
         </div>
 
         <div className="input-box">
-        <label htmlFor="term-label"></label>
-        <input className="term-input" list="categories" name="browser" placeholder="Category"/>
+          <input
+            className="term-input"
+            list="categories"
+            name="categories"
+            required
+          />
+            <label className="term-label">Category</label>
           <datalist id="categories">
             <option value="Javascript"></option>
             <option value="VSCODE"></option>
@@ -37,9 +40,11 @@ export default function Home() {
             <option value="Node"></option>
             <option value="General Terms"></option>
           </datalist>
-        
         </div>
 
+        <div className="submit-container">
+          <input className="submit" type="submit" />
+        </div>
       </form>
     </>
   );

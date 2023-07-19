@@ -24,10 +24,9 @@ padding: 1rem 0;
 
 .term-input {
 width: 100%;
-padding-top: 1rem;
+padding-top: .3rem;
 border: none;
 border-bottom: .1rem solid #ccc;
-/* border: .1rem solid #ccc; */
 outline: none;
 background: transparent;
 color: #fff;
@@ -38,20 +37,36 @@ font-size: 1.8rem;
   font-size: 1rem;
 }
 
-/* .term-label {
+.term-label {
   position: absolute;
   left: 0;
-  padding: 10px 5px;
+  padding: 1rem 0rem;
   color: white;
   font-size: 1.4rem;
-} */
-
-.term-input::placeholder {
-  padding: 1rem 0;
-  font-size: 1.8rem;
+  pointer-events: none;
+  transition: .5s;
 }
 
-.term-input:focus::placeholder {
+.submit {
+  background-color: #ccc;
+  padding: .5rem;
+  border-radius: .3rem;
+  cursor: pointer;
+}
+
+.submit:hover {
+  font-weight: bold;
+  transition: .1s;
+}
+
+.submit-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 1rem;
+}
+
+.term-input:valid ~ label,
+.term-input:focus ~ label {
   transform: translateY(-2rem);
   transition: .5s;
   color: rgb(162, 162, 198);
