@@ -2,11 +2,18 @@
 import { SetStateAction, useEffect, useState } from "react";
 import Image from "next/image";
 
+interface FormDataItem {
+  term: string;
+  description: string;
+  category: string;
+  // Add any other properties if needed
+}
+
 export default function Home() {
   const [term, setTerm] = useState("");
   const [description, setDescription] = useState("");
   const [category, setCategory] = useState("");
-  const [readableForm, setReadableForm] = useState([])
+  const [readableForm, setReadableForm] = useState<FormDataItem[]>([]); // Set the type for readableForm as FormDataItem[]
 
   const handleTermChange = (e: { target: { value: SetStateAction<string>; }; }) => {
     setTerm(e.target.value);
@@ -24,15 +31,15 @@ export default function Home() {
     fetch("/api/readFormData", {
       method: "GET"
     })
-    .then((response) => response.json())
-    .then(([formData]) => {
-      console.log([formData.term])
-      setReadableForm(formData.term)
-    })
-    .catch((error) => {
-      console.error("Error fetching data:", error);
-    });
-  })
+      .then((response) => response.json())
+      .then((formDataArray) => {
+        setReadableForm(formDataArray);
+      })
+      .catch((error) => {
+        console.error("Error fetching data:", error);
+      });
+  });
+  
 
   const handleSubmit = (e: { preventDefault: () => void; }) => {
     e.preventDefault();
@@ -57,7 +64,27 @@ export default function Home() {
     <>
       <h1 className="text-white">Brandon's Study Guide</h1>
 
-    <h2 className="text-white">{readableForm}</h2>
+      <div className="flex justify-center mt-20 mb-20">
+        {/* <p className="text-white" key={data.term}>{data.term}</p> */}
+        <table>
+          <thead>
+            <tr>
+              <th>Term</th>
+              <th>Description</th>
+              <th>Category</th>
+            </tr>
+          </thead>
+          <tbody>
+      {readableForm.map((data) => (
+            <tr key={data.term}>
+              <td>{data.term}</td>
+              <td>{data.description}</td>
+              <td>{data.category}</td>
+            </tr>
+      ))}
+      </tbody>
+    </table>
+    </div>
 
       <div className="page-container">
         <div>
