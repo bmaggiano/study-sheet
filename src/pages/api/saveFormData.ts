@@ -25,8 +25,8 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
     };
     existingData.push(newData);
 
-    // Write the updated array back to the file
-    fs.writeFileSync("formData.json", JSON.stringify(existingData), "utf8");
+    // Write the updated array back to the file with indentation (2 spaces in this case)
+    fs.writeFileSync("formData.json", JSON.stringify(existingData, null, 2), "utf8");
 
     res.status(200).json({ message: "Form data saved successfully" });
   } else {
