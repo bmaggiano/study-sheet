@@ -53,14 +53,18 @@ export default function Home() {
     })
       .then((response) => response.json())
       .then((data) => {
-        console.log(data); // You can handle the response accordingly
+        console.log(data);
+      setCategory("")
+      setDescription("")
+      setTerm("") // You can handle the response accordingly
       })
       .catch((error) => {
         console.error("Error:", error);
       });
+
   };
 
-  const handleDelete = (termToDelete) => {
+  const handleDelete = (termToDelete: string) => {
     fetch("/api/deleteFormData", {
       method: "DELETE",
       body: JSON.stringify({ term: termToDelete }),
@@ -100,7 +104,9 @@ export default function Home() {
               <td>{data.term}</td>
               <td>{data.description}</td>
               <td>{data.category}</td>
-              <td>Edit</td>
+              <td>
+                <button>Edit</button>
+                </td>
               <td>
               <button onClick={() => handleDelete(data.term)}>Delete</button>
                 </td>
@@ -118,12 +124,12 @@ export default function Home() {
         <div>
           <form onSubmit={handleSubmit}>
             <div className="input-box">
-              <input type="text" className="term-input" onChange={handleTermChange} required />
+              <input type="text" className="term-input" value={term} onChange={handleTermChange} required />
               <label className="term-label">Term</label>
             </div>
 
             <div className="input-box area">
-              <textarea className="term-input text-area" rows={7} onChange={handleDescriptionChange} required />
+              <textarea className="term-input text-area" rows={7} value={description} onChange={handleDescriptionChange} required />
               <label className="term-label">Description</label>
             </div>
 
@@ -132,6 +138,7 @@ export default function Home() {
                 className="term-input"
                 list="categories"
                 name="categories"
+                value={category}
                 onChange={handleCategoryChange}
                 required
               />
