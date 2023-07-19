@@ -12,15 +12,15 @@ gap: 2rem;
 }
 
 button {
-  padding: .5rem;
-  background-color: #ddd;
+  padding: .5rem 1rem;
+  background-color: black;
   border: none;
   border-radius: 1rem;
-  color: black;
+  color: white;
 }
 
 button:hover {
-  font-weight: bold;
+  color: #ccc;
   transition: .1s;
 }
 
@@ -36,7 +36,7 @@ button:hover {
   display: flex;
   justify-content: center;
   /* margin-top: 10rem; */
-  background-color: #ccc;
+  background-color: #ffffff;
   padding: 10rem;
 }
 
