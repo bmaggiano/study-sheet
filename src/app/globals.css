@@ -4,16 +4,19 @@
 
 
 body {
-display: flex;
-flex-direction: column;
-align-items: center;
-justify-content: center;
 height: 100vh;
 /* background: url("") no-repeat center; */
-background-color: black;
+background-color: rgb(0, 0, 0);
 font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 letter-spacing: .1rem;
 gap: 2rem;
+}
+
+.page-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+  margin-top: 20rem;
 }
 
 .input-box {
@@ -41,7 +44,7 @@ font-size: 1.8rem;
   position: absolute;
   left: 0;
   padding: 1rem 0rem;
-  color: rgba(255, 255, 255, .5);
+  color: #ccc;
   font-size: 1.4rem;
   pointer-events: none;
   transition: .5s;
@@ -69,6 +72,6 @@ font-size: 1.8rem;
 .term-input:focus ~ label {
   transform: translateY(-2rem);
   transition: .5s;
-  color: rgb(162, 162, 198);
+  color: rgba(255, 255, 255, .5);
   font-size: 1rem;
 }
