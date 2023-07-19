@@ -84,9 +84,9 @@ export default function Home() {
 
   return (
     <>
-      <h1 className="text-white">Brandon's Study Guide</h1>
+      <h1 className="text-white bg-black">Brandon's Study Guide</h1>
 
-      <div className="flex justify-center mt-20 mb-20">
+      <div className="tableContainer">
         {/* <p className="text-white" key={data.term}>{data.term}</p> */}
         <table>
           <thead>
