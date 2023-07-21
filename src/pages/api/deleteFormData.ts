@@ -1,37 +1,34 @@
 // pages/api/deleteFormData.js
 
-import { NextApiRequest, NextApiResponse } from "next";
-import fs from "fs";
+import { PrismaClient } from '@prisma/client';
+import { NextApiRequest, NextApiResponse } from 'next';
 
+const prisma = new PrismaClient();
 const PASSWORD = process.env.PASSWORD; // Replace this with your actual password or store it securely in environment variables
 
-
-export default function handler(req: NextApiRequest, res: NextApiResponse) {
-  if (req.method === "DELETE") {
-    const { term, password } = req.body;
+export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+  if (req.method === 'DELETE') {
+    const { id, password } = req.body;
 
     if (password !== PASSWORD) {
-        // Password is incorrect, return an error response
-        return res.status(401).json({ error: "Incorrect password" });
-      }
-
-    // Read existing data from the file (if any)
-    let existingData = [];
-    try {
-      const data = fs.readFileSync("formData.json", "utf8");
-      existingData = JSON.parse(data);
-    } catch (err) {
-      // If the file does not exist or there's an error reading it, ignore and continue with an empty array
+      // Password is incorrect, return an error response
+      return res.status(401).json({ error: 'Incorrect password' });
     }
 
-    // Filter out the form data object with the matching term
-    const updatedData = existingData.filter((data: { term: any; }) => data.term !== term);
+    try {
+      // Use Prisma to delete the data with the matching id from the "notes" collection
+      const deletedNote = await prisma.notes.delete({
+        where: {
+          id: id, // Use the provided id to identify the document to delete
+        },
+      });
 
-    // Write the updated array back to the file
-    fs.writeFileSync("formData.json", JSON.stringify(updatedData), "utf8");
-
-    res.status(200).json(updatedData);
+      res.status(200).json(deletedNote);
+    } catch (err) {
+      console.error('Error deleting data:', err);
+      res.status(500).json({ error: 'Something went wrong' });
+    }
   } else {
-    res.status(405).json({ error: "Method not allowed" });
+    res.status(405).json({ error: 'Method not allowed' });
   }
 }

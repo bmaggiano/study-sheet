@@ -3,6 +3,7 @@ import { SetStateAction, useEffect, useState } from "react";
 import Image from "next/image";
 
 interface FormDataItem {
+  id: string;
   term: string;
   description: string;
   category: string;
@@ -53,7 +54,7 @@ export default function Home() {
       .catch((error) => {
         console.error("Error fetching data:", error);
       });
-  }, [readableForm]);
+  });
 
   const handleSubmit = (e: { preventDefault: () => void }) => {
     e.preventDefault();
@@ -131,12 +132,12 @@ export default function Home() {
     }
   };
 
-  const handleDelete = (termToDelete: string) => {
+  const handleDelete = (idToDelete: string) => {
     const enteredPassword = prompt("What's the magic word?");
 
     fetch("/api/deleteFormData", {
       method: "DELETE",
-      body: JSON.stringify({ term: termToDelete, password: enteredPassword }),
+      body: JSON.stringify({ id: idToDelete, password: enteredPassword }),
       headers: {
         "Content-Type": "application/json",
       },
@@ -166,6 +167,7 @@ export default function Home() {
 
       <div className="tableContainer">
         {/* <p className="text-white" key={data.term}>{data.term}</p> */}
+        {readableForm.length > 0 ? (
         <table>
           <thead>
             <tr>
@@ -182,11 +184,11 @@ export default function Home() {
                 <td>{data.term}</td>
                 <td>{data.description}</td>
                 <td>{data.category}</td>
-                <td>
+                <td className="text-center">
                   <button onClick={() => handleEdit(data)}>Edit</button>
                 </td>
-                <td>
-                  <button onClick={() => handleDelete(data.term)}>
+                <td className="text-center">
+                  <button onClick={() => handleDelete(data.id)}>
                     Delete
                   </button>
                 </td>
@@ -194,6 +196,9 @@ export default function Home() {
             ))}
           </tbody>
         </table>
+        ) : (
+          <p className="text-center">Loading Data...</p>
+    )}
       </div>
 
       <div className="page-container">
