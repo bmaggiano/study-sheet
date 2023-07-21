@@ -18,7 +18,6 @@ export default function Home() {
   const [editingItem, setEditingItem] = useState<FormDataItem | null>(null);
   const [selectedCategory, setSelectedCategory] = useState("");
 
-
   const handleEdit = (item: FormDataItem) => {
     setEditingItem(item);
     setTerm(item.term);
@@ -42,7 +41,6 @@ export default function Home() {
     const selectedCategory = e.target.value === "" ? "" : e.target.value;
     setSelectedCategory(selectedCategory);
   };
-  
 
   useEffect(() => {
     fetch("/api/readFormData", {
@@ -59,24 +57,25 @@ export default function Home() {
 
   const handleSubmit = (e: { preventDefault: () => void }) => {
     e.preventDefault();
-  
+
     const enteredPassword = prompt("What's the magic word?");
-  
+
     const formData = {
       term,
       description,
       category,
       password: enteredPassword, // Pass the entered password as a separate property
     };
-  
+
     if (editingItem) {
       // Update existing item
-      console.log(editingItem.id)
+      console.log(editingItem.id);
       formData.term = term;
       formData.description = description;
       formData.category = category;
-  
-      fetch(`/api/updateFormData/${editingItem.id}`, { // Use "id" instead of "term" here
+
+      fetch(`/api/updateFormData/${editingItem.id}`, {
+        // Use "id" instead of "term" here
         method: "PUT",
         body: JSON.stringify(formData),
         headers: {
@@ -163,13 +162,9 @@ export default function Home() {
       });
   };
 
-  const handleCategoryButtonClick = (category: string) => {
-    setSelectedCategory(category);
-  };
-
   const filteredData = selectedCategory
-  ? readableForm.filter((data) => data.category === selectedCategory)
-  : readableForm;
+    ? readableForm.filter((data) => data.category === selectedCategory)
+    : readableForm;
 
   return (
     <>
@@ -177,32 +172,39 @@ export default function Home() {
 
       <div className="tableContainer">
         <div className="buttonContainer">
-      <button onClick={() => handleCategoryButtonClick("")}>All</button>
-  <button onClick={() => handleCategoryButtonClick("General Terms")}>
-    General
-  </button>
-  <button onClick={() => handleCategoryButtonClick("Javascript")}>
-    Javascript
-  </button>
-  <button onClick={() => handleCategoryButtonClick("Vscode")}>Vscode</button>
-  <button onClick={() => handleCategoryButtonClick("NextJs")}>NextJs</button>
-  <button onClick={() => handleCategoryButtonClick("Node")}>Node</button>
-  <button onClick={() => handleCategoryButtonClick("Other")}>Other</button>
+          <div className="tableHeader">
+            <h2 className="text-lg font-semibold">Your Notes</h2>
+          </div>
+          <div className="tableSort">
+            <label>Sort by:&nbsp; </label>
+            <select
+              value={selectedCategory}
+              onChange={handleCategoryChange}
+              className="p-2 rounded-md"
+            >
+              <option value="">All</option>
+              <option value="General Terms">General</option>
+              <option value="Javascript">Javascript</option>
+              <option value="Vscode">Vscode</option>
+              <option value="NextJs">NextJs</option>
+              <option value="Node">Node</option>
+              <option value="Other">Other</option>
+            </select>
+          </div>
         </div>
-        {/* <p className="text-white" key={data.term}>{data.term}</p> */}
         {readableForm.length > 0 ? (
-        <table>
-          <thead>
-            <tr>
-              <th>Term</th>
-              <th>Description</th>
-              <th>Category</th>
-              <th className="text-center">Edit</th>
-              <th className="text-center">Delete</th>
-            </tr>
-          </thead>
-          <tbody>
-          {filteredData.map((data) => (
+          <table>
+            <thead>
+              <tr>
+                <th>Term</th>
+                <th>Description</th>
+                <th>Category</th>
+                <th className="text-center">Edit</th>
+                <th className="text-center">Delete</th>
+              </tr>
+            </thead>
+            <tbody>
+              {filteredData.map((data) => (
                 <tr key={data.term}>
                   <td>{data.term}</td>
                   <td>{data.description}</td>
@@ -221,7 +223,7 @@ export default function Home() {
           </table>
         ) : (
           <p className="text-center">Loading Data...</p>
-    )}
+        )}
       </div>
 
       <div className="page-container">
@@ -254,8 +256,13 @@ export default function Home() {
             </div>
 
             <div className="input-box">
-              <select className="term-input pb-2" required onChange={handleCategoryChange} value={category || ""}>
-              <option value="" disabled hidden></option>
+              <select
+                className="term-input pb-2"
+                required
+                onChange={handleCategoryChange}
+                value={category || ""}
+              >
+                <option value="" disabled hidden></option>
                 <option value="General Terms">General Terms</option>
                 <option value="Javascript">Javascript</option>
                 <option value="Vscode">Vscode</option>
