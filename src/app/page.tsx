@@ -53,7 +53,7 @@ export default function Home() {
       .catch((error) => {
         console.error("Error fetching data:", error);
       });
-  }, []);
+  }, [readableForm]);
 
   const handleSubmit = (e: { preventDefault: () => void }) => {
     e.preventDefault();

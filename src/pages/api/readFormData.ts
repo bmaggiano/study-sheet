@@ -9,7 +9,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   if (req.method === 'GET') {
     try {
       const notes = await prisma.notes.findMany();
-      console.log('Fetched notes:', notes); // Add this line to log the fetched data
+      // console.log('Fetched notes:', notes); // Add this line to log the fetched data
 
       // Respond with the formData array
       res.status(200).json(notes);
