@@ -58,23 +58,24 @@ export default function Home() {
 
   const handleSubmit = (e: { preventDefault: () => void }) => {
     e.preventDefault();
-
+  
     const enteredPassword = prompt("What's the magic word?");
-
+  
     const formData = {
       term,
       description,
       category,
       password: enteredPassword, // Pass the entered password as a separate property
     };
-
+  
     if (editingItem) {
       // Update existing item
+      console.log(editingItem.id)
       formData.term = term;
       formData.description = description;
       formData.category = category;
-
-      fetch(`/api/updateFormData/${editingItem.term}`, {
+  
+      fetch(`/api/updateFormData/${editingItem.id}`, { // Use "id" instead of "term" here
         method: "PUT",
         body: JSON.stringify(formData),
         headers: {
