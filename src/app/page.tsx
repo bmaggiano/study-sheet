@@ -16,6 +16,8 @@ export default function Home() {
   const [category, setCategory] = useState("");
   const [readableForm, setReadableForm] = useState<FormDataItem[]>([]); // Set the type for readableForm as FormDataItem[]
   const [editingItem, setEditingItem] = useState<FormDataItem | null>(null);
+  const [selectedCategory, setSelectedCategory] = useState("");
+
 
   const handleEdit = (item: FormDataItem) => {
     setEditingItem(item);
@@ -37,9 +39,8 @@ export default function Home() {
   };
 
   const handleCategoryChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    // Check if the selected value is empty (no specific category selected)
     const selectedCategory = e.target.value === "" ? "" : e.target.value;
-    setCategory(selectedCategory);
+    setSelectedCategory(selectedCategory);
   };
   
 
@@ -162,11 +163,32 @@ export default function Home() {
       });
   };
 
+  const handleCategoryButtonClick = (category: string) => {
+    setSelectedCategory(category);
+  };
+
+  const filteredData = selectedCategory
+  ? readableForm.filter((data) => data.category === selectedCategory)
+  : readableForm;
+
   return (
     <>
       <h1 className="text-white bg-black p-2">Brandon&apos;s Study Guide</h1>
 
       <div className="tableContainer">
+        <div className="buttonContainer">
+      <button onClick={() => handleCategoryButtonClick("")}>All</button>
+  <button onClick={() => handleCategoryButtonClick("General Terms")}>
+    General
+  </button>
+  <button onClick={() => handleCategoryButtonClick("Javascript")}>
+    Javascript
+  </button>
+  <button onClick={() => handleCategoryButtonClick("Vscode")}>Vscode</button>
+  <button onClick={() => handleCategoryButtonClick("NextJs")}>NextJs</button>
+  <button onClick={() => handleCategoryButtonClick("Node")}>Node</button>
+  <button onClick={() => handleCategoryButtonClick("Other")}>Other</button>
+        </div>
         {/* <p className="text-white" key={data.term}>{data.term}</p> */}
         {readableForm.length > 0 ? (
         <table>
@@ -180,23 +202,23 @@ export default function Home() {
             </tr>
           </thead>
           <tbody>
-            {readableForm.map((data) => (
-              <tr key={data.term}>
-                <td>{data.term}</td>
-                <td>{data.description}</td>
-                <td>{data.category}</td>
-                <td className="text-center">
-                  <button onClick={() => handleEdit(data)}>Edit</button>
-                </td>
-                <td className="text-center">
-                  <button onClick={() => handleDelete(data.id)}>
-                    Delete
-                  </button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+          {filteredData.map((data) => (
+                <tr key={data.term}>
+                  <td>{data.term}</td>
+                  <td>{data.description}</td>
+                  <td>{data.category}</td>
+                  <td className="text-center">
+                    <button onClick={() => handleEdit(data)}>Edit</button>
+                  </td>
+                  <td className="text-center">
+                    <button onClick={() => handleDelete(data.id)}>
+                      Delete
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
         ) : (
           <p className="text-center">Loading Data...</p>
     )}

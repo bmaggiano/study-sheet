@@ -32,6 +32,12 @@ button:hover {
   padding: 10rem 0;
 }
 
+.buttonContainer {
+  display: flex;
+  justify-content: space-around;
+  margin-bottom: 1rem;
+}
+
 .tableContainer {
   margin: 0 auto;
   max-width: 60rem; /* Adjust to your desired width */
