@@ -17,6 +17,29 @@ export default function Home() {
   const [readableForm, setReadableForm] = useState<FormDataItem[]>([]); // Set the type for readableForm as FormDataItem[]
   const [editingItem, setEditingItem] = useState<FormDataItem | null>(null);
   const [selectedCategory, setSelectedCategory] = useState("");
+  const [currentPage, setCurrentPage] = useState(1);
+
+  const filteredData = selectedCategory
+  ? readableForm.filter((data) => data.category === selectedCategory)
+  : readableForm;
+
+
+  const ITEMS_PER_PAGE = 2; // Define the number of items to display per page
+
+    // Calculate the index range for the items to display on the current page
+    const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
+    const endIndex = startIndex + ITEMS_PER_PAGE;
+
+    // Slice the data to display only the items for the current page
+  const currentItems = filteredData.slice(startIndex, endIndex);
+
+  // Calculate the total number of pages
+  const totalPages = Math.ceil(filteredData.length / ITEMS_PER_PAGE);
+
+    // Function to handle page navigation
+    const handlePageChange = (page: number) => {
+      setCurrentPage(page);
+    };
 
   const handleEdit = (item: FormDataItem) => {
     setEditingItem(item);
@@ -162,10 +185,6 @@ export default function Home() {
       });
   };
 
-  const filteredData = selectedCategory
-    ? readableForm.filter((data) => data.category === selectedCategory)
-    : readableForm;
-
   return (
     <>
       <h1 className="text-white bg-black p-2">Brandon&apos;s Study Guide</h1>
@@ -193,7 +212,7 @@ export default function Home() {
           </div>
         </div>
         {readableForm.length > 0 ? (
-          <table>
+          <><table>
             <thead>
               <tr>
                 <th>Term</th>
@@ -204,7 +223,7 @@ export default function Home() {
               </tr>
             </thead>
             <tbody>
-              {filteredData.map((data) => (
+              {currentItems.map((data) => (
                 <tr key={data.term}>
                   <td>{data.term}</td>
                   <td>{data.description}</td>
@@ -221,6 +240,22 @@ export default function Home() {
               ))}
             </tbody>
           </table>
+          <div className="pagesContainer mt-3 flex items-center justify-end bg-gray-100">
+            <h3>Pages:&nbsp;</h3>
+              {Array.from({ length: totalPages }, (_, index) => (
+                <>
+                <button
+                  key={index + 1}
+                  onClick={() => handlePageChange(index + 1)}
+                  className={index + 1 === currentPage ? "active bg-gray-100" : "otherpage bg-gray-100 text-gray-400"}
+                  >
+                  {index + 1}
+                </button>
+              </>
+              ))}
+            </div>
+            </>
+
         ) : (
           <p className="text-center">Loading Data...</p>
         )}

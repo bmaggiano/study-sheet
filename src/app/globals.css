@@ -11,7 +11,7 @@ letter-spacing: .1rem;
 gap: 2rem;
 }
 
-button {
+table button {
   padding: .5rem 1rem;
   background-color: black;
   border: none;
@@ -19,7 +19,7 @@ button {
   color: white;
 }
 
-button:hover {
+table button:hover {
   color: #ccc;
   transition: .1s;
 }
@@ -42,6 +42,15 @@ button:hover {
 .tableSort {
   display: flex;
   align-items: center;
+}
+
+.active, .otherpage {
+  /* color: black; */
+  padding: .5rem .5rem;
+}
+
+.pagesContainer button:hover{
+  color: black;
 }
 
 .tableContainer {
