@@ -3,14 +3,14 @@ generator client {
 }
 
 datasource db {
-  provider     = "mysql"
+  provider     = "mongodb"
   url          = env("DATABASE_URL")
   relationMode = "prisma"
 }
 
 model notes {
-  id          Int     @id @default(autoincrement())
-  term        String  @db.VarChar(255)
-  description String? @db.Text
-  category    String? @db.VarChar(100)
+  id String @id @default(auto()) @map("_id") @db.ObjectId  
+  term        String    
+  description String?   
+  category    String?   
 }

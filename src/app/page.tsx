@@ -41,7 +41,6 @@ export default function Home() {
     setCategory(selectedCategory);
   };
   
-  
 
   useEffect(() => {
     fetch("/api/readFormData", {
@@ -54,7 +53,7 @@ export default function Home() {
       .catch((error) => {
         console.error("Error fetching data:", error);
       });
-  });
+  }, []);
 
   const handleSubmit = (e: { preventDefault: () => void }) => {
     e.preventDefault();
