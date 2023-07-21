@@ -2,12 +2,12 @@
 import { SetStateAction, useEffect, useState } from "react";
 import Image from "next/image";
 
+// Add any other properties if needed
 interface FormDataItem {
   id: string;
   term: string;
   description: string;
   category: string;
-  // Add any other properties if needed
 }
 
 export default function Home() {
