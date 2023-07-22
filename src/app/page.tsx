@@ -212,6 +212,7 @@ export default function Home() {
               <option value="Vscode">Vscode</option>
               <option value="NextJs">NextJs</option>
               <option value="Node">Node</option>
+              <option value="Leetcode">Leetcode</option>
               <option value="Other">Other</option>
             </select>
           </div>
@@ -308,6 +309,7 @@ export default function Home() {
                 <option value="Vscode">Vscode</option>
                 <option value="NextJs">NextJs</option>
                 <option value="Node">Node</option>
+                <option value="Leetcode">Leetcode</option>
                 <option value="Other">Other</option>
               </select>
               <label className="term-label">Category</label>
