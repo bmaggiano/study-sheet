@@ -24,7 +24,7 @@ export default function Home() {
   : readableForm;
 
 
-  const ITEMS_PER_PAGE = 2; // Define the number of items to display per page
+  const ITEMS_PER_PAGE = 5; // Define the number of items to display per page
 
     // Calculate the index range for the items to display on the current page
     const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
@@ -60,9 +60,14 @@ export default function Home() {
     setDescription(e.target.value);
   };
 
-  const handleCategoryChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+  const handleCategorySearchChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const selectedCategory = e.target.value === "" ? "" : e.target.value;
     setSelectedCategory(selectedCategory);
+  };
+
+  const handleCategoryChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const selectedCategory = e.target.value === "" ? "" : e.target.value;
+    setCategory(selectedCategory);
   };
 
   useEffect(() => {
@@ -192,13 +197,13 @@ export default function Home() {
       <div className="tableContainer">
         <div className="buttonContainer">
           <div className="tableHeader">
-            <h2 className="text-lg font-semibold">Your Notes</h2>
+            <h2 className="text-2xl font-semibold">Your Notes</h2>
           </div>
           <div className="tableSort">
             <label>Sort by:&nbsp; </label>
             <select
               value={selectedCategory}
-              onChange={handleCategoryChange}
+              onChange={handleCategorySearchChange}
               className="p-2 rounded-md"
             >
               <option value="">All</option>
@@ -212,7 +217,8 @@ export default function Home() {
           </div>
         </div>
         {readableForm.length > 0 ? (
-          <><table>
+          <>
+          <table>
             <thead>
               <tr>
                 <th>Term</th>
@@ -224,15 +230,15 @@ export default function Home() {
             </thead>
             <tbody>
               {currentItems.map((data) => (
-                <tr key={data.term}>
-                  <td>{data.term}</td>
-                  <td>{data.description}</td>
+                <tr key={data.id}>
+                  <td className="">{data.term}</td>
+                  <td className="">{data.description}</td>
                   <td>{data.category}</td>
                   <td className="text-center">
-                    <button onClick={() => handleEdit(data)}>Edit</button>
+                    <button className="bg-green-600" onClick={() => handleEdit(data)}>Edit</button>
                   </td>
                   <td className="text-center">
-                    <button onClick={() => handleDelete(data.id)}>
+                    <button className="bg-red-600" onClick={() => handleDelete(data.id)}>
                       Delete
                     </button>
                   </td>
@@ -243,7 +249,6 @@ export default function Home() {
           <div className="pagesContainer mt-3 flex items-center justify-end bg-gray-100">
             <h3>Pages:&nbsp;</h3>
               {Array.from({ length: totalPages }, (_, index) => (
-                <>
                 <button
                   key={index + 1}
                   onClick={() => handlePageChange(index + 1)}
@@ -251,7 +256,6 @@ export default function Home() {
                   >
                   {index + 1}
                 </button>
-              </>
               ))}
             </div>
             </>
@@ -263,6 +267,7 @@ export default function Home() {
 
       <div className="page-container">
         <div>
+          <h3 className="text-center font-bold">Enter Your Notes</h3>
           <Image alt="notebook" src="/notebook.png" width={400} height={400} />
         </div>
 

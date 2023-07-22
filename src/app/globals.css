@@ -13,15 +13,16 @@ gap: 2rem;
 
 table button {
   padding: .5rem 1rem;
-  background-color: black;
   border: none;
-  border-radius: 1rem;
+  border-radius: .5rem;
   color: white;
+  box-shadow: 0 0 .2rem rgb(128, 128, 128);
 }
 
 table button:hover {
-  color: #ccc;
+  color: #e9e9e9;
   transition: .1s;
+  box-shadow: none;
 }
 
 .page-container {
@@ -45,7 +46,6 @@ table button:hover {
 }
 
 .active, .otherpage {
-  /* color: black; */
   padding: .5rem .5rem;
 }
 
@@ -55,11 +55,12 @@ table button:hover {
 
 .tableContainer {
   margin: 0 auto;
-  max-width: 60rem; /* Adjust to your desired width */
+  margin-left: 2rem;
+  margin-right: 2rem;
   /* max-width: 60rem; */
   margin-top: 6rem;
   border-radius: .5rem;
-  border: .1rem solid gray;
+  border: .1rem solid rgba(128, 128, 128, 0.514);
   padding: 1rem;
   overflow-x: auto; /* Enable horizontal scrolling within the container */
   margin-bottom: 6rem;
@@ -68,7 +69,6 @@ table button:hover {
 table {
   color: rgb(0, 0, 0);
   border-collapse: collapse;
-  width: 100%;
 }
 
 th, td {
@@ -81,6 +81,12 @@ td {
 }
 thead {
   font-size: 1.2rem;
+}
+
+.page-container h3 {
+  color: #ccc;
+  letter-spacing: .5rem;
+  font-size: 2rem;
 }
 
 .input-box {
@@ -139,4 +145,23 @@ font-size: 1.8rem;
   transition: .5s;
   color: rgba(255, 255, 255, .5);
   font-size: 1rem;
+}
+
+@media (max-width: 600px) {
+  .page-container {
+    flex-direction: column;
+  }
+  .tableContainer {
+    margin-left: 0;
+    margin-right: 0;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+    border: none;
+  }
+  td {
+    white-space: pre;
+  }
+  .pagesContainer {
+    background-color: white;
+  }
 }
