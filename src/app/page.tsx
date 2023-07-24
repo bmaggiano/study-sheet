@@ -28,10 +28,7 @@ export default function Home() {
 
     // Calculate the index range for the items to display on the current page
     const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
-    const endIndex = startIndex + ITEMS_PER_PAGE;
-
-    // Slice the data to display only the items for the current page
-  const currentItems = filteredData.slice(startIndex, endIndex);
+    const endIndex = Math.min(startIndex + ITEMS_PER_PAGE, filteredData.length);
 
   // Calculate the total number of pages
   const totalPages = Math.ceil(filteredData.length / ITEMS_PER_PAGE);
@@ -230,7 +227,7 @@ export default function Home() {
               </tr>
             </thead>
             <tbody>
-              {currentItems.map((data) => (
+              {filteredData.slice(startIndex, endIndex).map((data) => (
                 <tr key={data.id}>
                   <td className="">{data.term}</td>
                   <td className="">{data.description}</td>
