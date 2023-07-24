@@ -1,6 +1,7 @@
 "use client";
 import { SetStateAction, useEffect, useState } from "react";
 import Image from "next/image";
+import serviceFunctions from "@/utils/services";
 
 // Add any other properties if needed
 interface FormDataItem {
@@ -67,17 +68,17 @@ export default function Home() {
     setCategory(selectedCategory);
   };
 
+  const fetchFormData = async () => {
+    try {
+      const data = await serviceFunctions.getFormData()
+      setReadableForm(data)
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    };
+  }
+
   useEffect(() => {
-    fetch("/api/readFormData", {
-      method: "GET",
-    })
-      .then((response) => response.json())
-      .then((formDataArray) => {
-        setReadableForm(formDataArray);
-      })
-      .catch((error) => {
-        console.error("Error fetching data:", error);
-      });
+    fetchFormData()
   }, [readableForm]);
 
   const handleSubmit = (e: { preventDefault: () => void }) => {
@@ -189,6 +190,7 @@ export default function Home() {
 
   return (
     <>
+
       <h1 className="text-white bg-black p-2">Brandon&apos;s Study Guide</h1>
 
       <div className="tableContainer">
@@ -231,7 +233,7 @@ export default function Home() {
                 <tr key={data.id}>
                   <td className="">{data.term}</td>
                   <td className="">{data.description}</td>
-                  <td>{data.category}</td>
+                  <td className="text-center">{data.category}</td>
                   <td className="text-center">
                     <button className="bg-green-600" onClick={() => handleEdit(data)}>Edit</button>
                   </td>
