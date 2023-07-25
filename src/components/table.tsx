@@ -1,5 +1,6 @@
 "use client";
-import React from "react";
+import {useState, useEffect} from "react";
+import serviceFunctions from "@/utils/services";
 
 interface FormData {
     id: string;
@@ -24,8 +25,10 @@ const Table: React.FC<TableProps> = ({
   onEdit,
   onCategorySearchChange,
   onPageChange,
-  readableForm, // Make sure this prop is passed
 }) => {
+
+    const [readableForm, setReadableForm] = useState<FormData[]>([]); // Set the type for readableForm as FormDataItem[]
+
 
   const onDelete = (idToDelete: string) => {
     const enteredPassword = prompt("What's the magic word?");
@@ -55,8 +58,20 @@ const Table: React.FC<TableProps> = ({
           "Incorrect password or form submission failed. Please try again."
         );
       });
-  };// Add logic for filtering and pagination here
+  };
 
+    const fetchFormData = async () => {
+    try {
+      const data = await serviceFunctions.getFormData()
+      setReadableForm(data)
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    };
+  }
+
+  useEffect(() => {
+    fetchFormData()
+  }, [readableForm]);
 
   const filteredData = selectedCategory
     ? readableForm.filter((data) => data.category === selectedCategory)
