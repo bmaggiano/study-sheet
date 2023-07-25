@@ -2,6 +2,7 @@
 import { SetStateAction, useEffect, useState } from "react";
 import serviceFunctions from "@/utils/services";
 import Form from "@/components/form";
+import Table from "@/components/table";
 
 // Add any other properties if needed
 interface FormDataItem {
@@ -193,77 +194,17 @@ export default function Home() {
 
       <h1 className="text-white bg-black p-2">Brandon&apos;s Study Guide</h1>
 
-      <div className="tableContainer">
-        <div className="buttonContainer">
-          <div className="tableHeader">
-            <h2 className="text-2xl font-semibold">Your Notes</h2>
-          </div>
-          <div className="tableSort">
-            <label>Sort by:&nbsp; </label>
-            <select
-              value={selectedCategory}
-              onChange={handleCategorySearchChange}
-              className="p-2 rounded-md"
-            >
-              <option value="">All</option>
-              <option value="General Terms">General</option>
-              <option value="Javascript">Javascript</option>
-              <option value="Vscode">Vscode</option>
-              <option value="NextJs">NextJs</option>
-              <option value="Node">Node</option>
-              <option value="Leetcode">Leetcode</option>
-              <option value="Other">Other</option>
-            </select>
-          </div>
-        </div>
-        {readableForm.length > 0 ? (
-          <>
-          <table>
-            <thead>
-              <tr>
-                <th>Term</th>
-                <th>Description</th>
-                <th>Category</th>
-                <th className="text-center">Edit</th>
-                <th className="text-center">Delete</th>
-              </tr>
-            </thead>
-            <tbody>
-              {filteredData.slice(startIndex, endIndex).map((data) => (
-                <tr key={data.id}>
-                  <td className="">{data.term}</td>
-                  <td className="">{data.description}</td>
-                  <td className="text-center">{data.category}</td>
-                  <td className="text-center">
-                    <button className="bg-green-600" onClick={() => handleEdit(data)}>Edit</button>
-                  </td>
-                  <td className="text-center">
-                    <button className="bg-red-600" onClick={() => handleDelete(data.id)}>
-                      Delete
-                    </button>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-          <div className="pagesContainer mt-3 flex items-center justify-end bg-gray-100">
-            <h3>Pages:&nbsp;</h3>
-              {Array.from({ length: totalPages }, (_, index) => (
-                <button
-                  key={index + 1}
-                  onClick={() => handlePageChange(index + 1)}
-                  className={index + 1 === currentPage ? "active bg-gray-100" : "otherpage bg-gray-100 text-gray-400"}
-                  >
-                  {index + 1}
-                </button>
-              ))}
-            </div>
-            </>
+      <Table
+        data={filteredData} // Pass the filteredData here
+        selectedCategory={selectedCategory}
+        currentPage={currentPage}
+        ITEMS_PER_PAGE={ITEMS_PER_PAGE}
+        onEdit={handleEdit}
+        onDelete={handleDelete}
+        onPageChange={handlePageChange}
+        onCategorySearchChange={handleCategorySearchChange} // Pass the actual function reference here
+        readableForm={filteredData}      />
 
-        ) : (
-          <p className="text-center">Loading Data...</p>
-        )}
-      </div>
 
       <div className="page-container">
         <Form
