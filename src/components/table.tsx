@@ -13,7 +13,6 @@ interface TableProps {
   selectedCategory: string;
   currentPage: number;
   onEdit: (item: FormData) => void;
-  // onDelete: (idToDelete: string) => void;
   onPageChange: (page: number) => void;
   onCategorySearchChange: React.ChangeEventHandler<HTMLSelectElement>; // Fix the type here
   readableForm: FormData[]; // Add this prop
@@ -27,7 +26,7 @@ const Table: React.FC<TableProps> = ({
   onPageChange,
   readableForm, // Make sure this prop is passed
 }) => {
-  
+
   const onDelete = (idToDelete: string) => {
     const enteredPassword = prompt("What's the magic word?");
 
@@ -45,7 +44,7 @@ const Table: React.FC<TableProps> = ({
           throw new Error("Password validation failed");
         }
       })
-      .then((data) => {
+      .then(() => {
         // Update the state with the updated form data after deletion
         // Instead of setting the data directly, call the onPageChange function
         onPageChange(currentPage);

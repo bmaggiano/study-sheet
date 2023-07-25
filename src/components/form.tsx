@@ -22,7 +22,6 @@ const Form: React.FC<FormProps> = ({
   onCategoryChange,
   onSubmit,
 }) => {
-  
   return (
     <>
       <div>
