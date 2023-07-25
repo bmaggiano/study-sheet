@@ -1,6 +1,5 @@
 "use client";
 import { SetStateAction, useEffect, useState } from "react";
-import Image from "next/image";
 import serviceFunctions from "@/utils/services";
 import Form from "@/components/form";
 
