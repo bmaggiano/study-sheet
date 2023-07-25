@@ -14,20 +14,18 @@ interface TableProps {
   selectedCategory: string;
   currentPage: number;
   onEdit: (item: FormData) => void;
-  onPageChange: (page: number) => void;
   onCategorySearchChange: React.ChangeEventHandler<HTMLSelectElement>; // Fix the type here
   readableForm: FormData[]; // Add this prop
 }
 
 const Table: React.FC<TableProps> = ({
   selectedCategory,
-  currentPage,
   onEdit,
   onCategorySearchChange,
-  onPageChange,
 }) => {
 
     const [readableForm, setReadableForm] = useState<FormData[]>([]); // Set the type for readableForm as FormDataItem[]
+    const [currentPage, setCurrentPage] = useState(1);
 
 
   const onDelete = (idToDelete: string) => {
@@ -50,7 +48,7 @@ const Table: React.FC<TableProps> = ({
       .then(() => {
         // Update the state with the updated form data after deletion
         // Instead of setting the data directly, call the onPageChange function
-        onPageChange(currentPage);
+        handlePageChange(currentPage);
       })
       .catch((error) => {
         console.error("Error deleting data:", error);
@@ -79,10 +77,13 @@ const Table: React.FC<TableProps> = ({
 
     const ITEMS_PER_PAGE = 5; // Define the number of items to display per page
 
-
   const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
   const endIndex = Math.min(startIndex + ITEMS_PER_PAGE, filteredData.length);
   const totalPages = Math.ceil(filteredData.length / ITEMS_PER_PAGE);
+
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
+  };
 
   return (
     <div className="tableContainer">
@@ -144,7 +145,7 @@ const Table: React.FC<TableProps> = ({
               {Array.from({ length: totalPages }, (_, index) => (
                 <button
                   key={index + 1}
-                  onClick={() => onPageChange(index + 1)}
+                  onClick={() => handlePageChange(index + 1)}
                   className={index + 1 === currentPage ? "active bg-gray-100" : "otherpage bg-gray-100 text-gray-400"}
                   >
                   {index + 1}

@@ -19,12 +19,12 @@ export default function PutTogether() {
   const [editingItem, setEditingItem] = useState<FormDataItem | null>(null);
   const [readableForm, setReadableForm] = useState<FormDataItem[]>([]); // Set the type for readableForm as FormDataItem[]
   const [selectedCategory, setSelectedCategory] = useState("");
-  const [currentPage, setCurrentPage] = useState(1);
+//   const [currentPage, setCurrentPage] = useState(1);
 
   // Function to handle page navigation
-  const handlePageChange = (page: number) => {
-    setCurrentPage(page);
-  };
+//   const handlePageChange = (page: number) => {
+//     setCurrentPage(page);
+//   };
 
   const handleEdit = (item: FormDataItem) => {
     //item is the FormDataItem with actual data
@@ -56,6 +56,13 @@ export default function PutTogether() {
     setCategory(selectedCategory);
   };
 
+  const resetFormData = () => {
+    setEditingItem(null);
+    setCategory("");
+    setDescription("");
+    setTerm("");
+  }
+
   const handleSubmit = (e: { preventDefault: () => void }) => {
     e.preventDefault();
 
@@ -75,12 +82,8 @@ export default function PutTogether() {
       formData.category = category;
 
       serviceFunctions.updateFormData(editingItem.id, formData)
-        .then((data) => {
-          console.log(data);
-          setEditingItem(null);
-          setCategory("");
-          setDescription("");
-          setTerm("");
+        .then(() => {
+          resetFormData()
         })
         .catch((error) => {
           console.error("Error:", error.message);
@@ -91,11 +94,8 @@ export default function PutTogether() {
     } else {
       // Create new item
       serviceFunctions.submitFormData(formData)
-        .then((data) => {
-          console.log(data);
-          setCategory("");
-          setDescription("");
-          setTerm("");
+        .then(() => {
+          resetFormData()
         })
         .catch(() => {
           window.alert(
@@ -111,14 +111,13 @@ export default function PutTogether() {
       <h1 className="text-white bg-black p-2">Brandon&apos;s Study Guide</h1>
 
       <Table
-        data={readableForm}
-        selectedCategory={selectedCategory}
-        currentPage={currentPage}
-        onEdit={handleEdit}
-        onPageChange={handlePageChange}
-        onCategorySearchChange={handleCategorySearchChange}
-        readableForm={readableForm}
-      />
+              data={readableForm}
+              selectedCategory={selectedCategory}
+              onEdit={handleEdit}
+              onCategorySearchChange={handleCategorySearchChange}
+              readableForm={readableForm} 
+              currentPage={1}      
+              />
 
       <div className="page-container">
         <Form
