@@ -27,6 +27,7 @@ export default function Home() {
   };
 
   const handleEdit = (item: FormDataItem) => {
+    //item is the FormDataItem with actual data
     setEditingItem(item);
     setTerm(item.term);
     setDescription(item.description);
