@@ -21,24 +21,12 @@ export default function Home() {
   const [selectedCategory, setSelectedCategory] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
 
-  const filteredData = selectedCategory
-  ? readableForm.filter((data) => data.category === selectedCategory)
-  : readableForm;
+  // const ITEMS_PER_PAGE = 5; // Define the number of items to display per page
 
-
-  const ITEMS_PER_PAGE = 5; // Define the number of items to display per page
-
-    // Calculate the index range for the items to display on the current page
-    const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
-    const endIndex = Math.min(startIndex + ITEMS_PER_PAGE, filteredData.length);
-
-  // Calculate the total number of pages
-  const totalPages = Math.ceil(filteredData.length / ITEMS_PER_PAGE);
-
-    // Function to handle page navigation
-    const handlePageChange = (page: number) => {
-      setCurrentPage(page);
-    };
+  // Function to handle page navigation
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
+  };
 
   const handleEdit = (item: FormDataItem) => {
     setEditingItem(item);
@@ -96,26 +84,11 @@ export default function Home() {
 
     if (editingItem) {
       // Update existing item
-      console.log(editingItem.id);
       formData.term = term;
       formData.description = description;
       formData.category = category;
 
-      fetch(`/api/updateFormData/${editingItem.id}`, {
-        // Use "id" instead of "term" here
-        method: "PUT",
-        body: JSON.stringify(formData),
-        headers: {
-          "Content-Type": "application/json",
-        },
-      })
-        .then((response) => {
-          if (response.ok) {
-            return response.json();
-          } else {
-            throw new Error("Password validation failed");
-          }
-        })
+      serviceFunctions.updateFormData(editingItem.id, formData)
         .then((data) => {
           console.log(data);
           setEditingItem(null);
@@ -131,28 +104,14 @@ export default function Home() {
         });
     } else {
       // Create new item
-      fetch("/api/saveFormData", {
-        method: "POST",
-        body: JSON.stringify(formData),
-        headers: {
-          "Content-Type": "application/json",
-        },
-      })
-        .then((response) => {
-          if (response.ok) {
-            return response.json();
-          } else {
-            throw new Error("Password validation failed");
-          }
-        })
+        serviceFunctions.submitFormData(formData)
         .then((data) => {
           console.log(data);
           setCategory("");
           setDescription("");
           setTerm("");
         })
-        .catch((error) => {
-          console.error("Error:", error.message);
+        .catch(() => {
           window.alert(
             "Incorrect password or form submission failed. Please try again."
           );
@@ -195,27 +154,28 @@ export default function Home() {
       <h1 className="text-white bg-black p-2">Brandon&apos;s Study Guide</h1>
 
       <Table
-        data={filteredData} // Pass the filteredData here
-        selectedCategory={selectedCategory}
-        currentPage={currentPage}
-        ITEMS_PER_PAGE={ITEMS_PER_PAGE}
-        onEdit={handleEdit}
-        onDelete={handleDelete}
-        onPageChange={handlePageChange}
-        onCategorySearchChange={handleCategorySearchChange} // Pass the actual function reference here
-        readableForm={filteredData}      />
+  data={readableForm}
+  selectedCategory={selectedCategory}
+  currentPage={currentPage}
+  onEdit={handleEdit}
+  onDelete={handleDelete}
+  onPageChange={handlePageChange}
+  onCategorySearchChange={handleCategorySearchChange}
+  readableForm={readableForm}
+/>
+
 
 
       <div className="page-container">
         <Form
-        term={term}
-        description={description}
-        category={category}
-        onTermChange={handleTermChange}
-        onDescriptionChange={handleDescriptionChange}
-        onCategoryChange={handleCategoryChange}
-        onSubmit={handleSubmit}
-      />
+          term={term}
+          description={description}
+          category={category}
+          onTermChange={handleTermChange}
+          onDescriptionChange={handleDescriptionChange}
+          onCategoryChange={handleCategoryChange}
+          onSubmit={handleSubmit}
+        />
       </div>
     </>
   );

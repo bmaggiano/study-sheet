@@ -12,7 +12,6 @@ interface TableProps {
   data: FormData[];
   selectedCategory: string;
   currentPage: number;
-  ITEMS_PER_PAGE: number;
   onEdit: (item: FormData) => void;
   onDelete: (idToDelete: string) => void;
   onPageChange: (page: number) => void;
@@ -24,7 +23,6 @@ const Table: React.FC<TableProps> = ({
   data,
   selectedCategory,
   currentPage,
-  ITEMS_PER_PAGE,
   onEdit,
   onDelete,
   onCategorySearchChange,
@@ -35,6 +33,9 @@ const Table: React.FC<TableProps> = ({
   const filteredData = selectedCategory
     ? readableForm.filter((data) => data.category === selectedCategory)
     : readableForm;
+
+    const ITEMS_PER_PAGE = 5; // Define the number of items to display per page
+
 
   const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
   const endIndex = Math.min(startIndex + ITEMS_PER_PAGE, filteredData.length);
