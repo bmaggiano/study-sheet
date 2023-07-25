@@ -21,8 +21,6 @@ export default function Home() {
   const [selectedCategory, setSelectedCategory] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
 
-  // const ITEMS_PER_PAGE = 5; // Define the number of items to display per page
-
   // Function to handle page navigation
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
