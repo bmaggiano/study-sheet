@@ -16,8 +16,8 @@ export default function Home() {
   const [term, setTerm] = useState("");
   const [description, setDescription] = useState("");
   const [category, setCategory] = useState("");
-  const [readableForm, setReadableForm] = useState<FormDataItem[]>([]); // Set the type for readableForm as FormDataItem[]
   const [editingItem, setEditingItem] = useState<FormDataItem | null>(null);
+  const [readableForm, setReadableForm] = useState<FormDataItem[]>([]); // Set the type for readableForm as FormDataItem[]
   const [selectedCategory, setSelectedCategory] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
 
@@ -102,7 +102,7 @@ export default function Home() {
         });
     } else {
       // Create new item
-        serviceFunctions.submitFormData(formData)
+      serviceFunctions.submitFormData(formData)
         .then((data) => {
           console.log(data);
           setCategory("");
@@ -117,52 +117,20 @@ export default function Home() {
     }
   };
 
-  const handleDelete = (idToDelete: string) => {
-    const enteredPassword = prompt("What's the magic word?");
-
-    fetch("/api/deleteFormData", {
-      method: "DELETE",
-      body: JSON.stringify({ id: idToDelete, password: enteredPassword }),
-      headers: {
-        "Content-Type": "application/json",
-      },
-    })
-      .then((response) => {
-        if (response.ok) {
-          return response.json();
-        } else {
-          throw new Error("Password validation failed");
-        }
-      })
-      .then((data) => {
-        // Update the state with the updated form data after deletion
-        setReadableForm(data);
-      })
-      .catch((error) => {
-        console.error("Error deleting data:", error);
-        window.alert(
-          "Incorrect password or form submission failed. Please try again."
-        );
-      });
-  };
-
   return (
     <>
 
       <h1 className="text-white bg-black p-2">Brandon&apos;s Study Guide</h1>
 
       <Table
-  data={readableForm}
-  selectedCategory={selectedCategory}
-  currentPage={currentPage}
-  onEdit={handleEdit}
-  onDelete={handleDelete}
-  onPageChange={handlePageChange}
-  onCategorySearchChange={handleCategorySearchChange}
-  readableForm={readableForm}
-/>
-
-
+        data={readableForm}
+        selectedCategory={selectedCategory}
+        currentPage={currentPage}
+        onEdit={handleEdit}
+        onPageChange={handlePageChange}
+        onCategorySearchChange={handleCategorySearchChange}
+        readableForm={readableForm}
+      />
 
       <div className="page-container">
         <Form

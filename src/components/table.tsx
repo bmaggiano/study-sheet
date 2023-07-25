@@ -13,23 +13,52 @@ interface TableProps {
   selectedCategory: string;
   currentPage: number;
   onEdit: (item: FormData) => void;
-  onDelete: (idToDelete: string) => void;
+  // onDelete: (idToDelete: string) => void;
   onPageChange: (page: number) => void;
   onCategorySearchChange: React.ChangeEventHandler<HTMLSelectElement>; // Fix the type here
   readableForm: FormData[]; // Add this prop
 }
 
 const Table: React.FC<TableProps> = ({
-  data,
   selectedCategory,
   currentPage,
   onEdit,
-  onDelete,
   onCategorySearchChange,
   onPageChange,
   readableForm, // Make sure this prop is passed
 }) => {
-  // Add logic for filtering and pagination here
+  
+  const onDelete = (idToDelete: string) => {
+    const enteredPassword = prompt("What's the magic word?");
+
+    fetch("/api/deleteFormData", {
+      method: "DELETE",
+      body: JSON.stringify({ id: idToDelete, password: enteredPassword }),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then((response) => {
+        if (response.ok) {
+          return response.json();
+        } else {
+          throw new Error("Password validation failed");
+        }
+      })
+      .then((data) => {
+        // Update the state with the updated form data after deletion
+        // Instead of setting the data directly, call the onPageChange function
+        onPageChange(currentPage);
+      })
+      .catch((error) => {
+        console.error("Error deleting data:", error);
+        window.alert(
+          "Incorrect password or form submission failed. Please try again."
+        );
+      });
+  };// Add logic for filtering and pagination here
+
+
   const filteredData = selectedCategory
     ? readableForm.filter((data) => data.category === selectedCategory)
     : readableForm;
