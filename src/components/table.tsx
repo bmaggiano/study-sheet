@@ -46,8 +46,6 @@ const Table: React.FC<TableProps> = ({
         }
       })
       .then(() => {
-        // Update the state with the updated form data after deletion
-        // Instead of setting the data directly, call the onPageChange function
         handlePageChange(currentPage);
       })
       .catch((error) => {

@@ -1,5 +1,5 @@
 "use client";
-import { SetStateAction, useEffect, useState } from "react";
+import { SetStateAction, useState } from "react";
 import serviceFunctions from "@/utils/services";
 import Form from "@/components/form";
 import Table from "@/components/table";
@@ -19,12 +19,6 @@ export default function PutTogether() {
   const [editingItem, setEditingItem] = useState<FormDataItem | null>(null);
   const [readableForm, setReadableForm] = useState<FormDataItem[]>([]); // Set the type for readableForm as FormDataItem[]
   const [selectedCategory, setSelectedCategory] = useState("");
-//   const [currentPage, setCurrentPage] = useState(1);
-
-  // Function to handle page navigation
-//   const handlePageChange = (page: number) => {
-//     setCurrentPage(page);
-//   };
 
   const handleEdit = (item: FormDataItem) => {
     //item is the FormDataItem with actual data
@@ -86,7 +80,6 @@ export default function PutTogether() {
           resetFormData()
         })
         .catch((error) => {
-          console.error("Error:", error.message);
           window.alert(
             "Incorrect password or form submission failed. Please try again."
           );

@@ -1,5 +1,5 @@
 "use client"
-import PutTogether from "@/components/functionality"
+import PutTogether from "@/components/putTogether"
 
 export default function Home() {
   return(
