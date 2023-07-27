@@ -1,11 +1,10 @@
-// pages/api/updateFormData/[id].ts
-
 import { NextApiRequest, NextApiResponse } from "next";
 import { PrismaClient } from "@prisma/client";
 
 const prisma = new PrismaClient();
 const PASSWORD = process.env.PASSWORD; // Replace this with your actual password or store it securely in environment variables
 
+// function to edit item where the id matches the query string provided
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method === "PUT") {
     const { id } = req.query; // Get the id from the URL parameters
@@ -27,13 +26,12 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
       // Update the item with the new values
       await prisma.notes.update({
-        where: { id: id as any }, // Pass the id as a string without converting it to a number
+        where: { id: id as any },
         data: { term: newTerm, description, category },
       });
 
       res.status(200).json({ message: "Form data updated successfully" });
     } catch (error) {
-      console.error("Error updating data:", error);
       res.status(500).json({ error: "Internal server error" });
     }
   } else {
