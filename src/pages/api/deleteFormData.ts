@@ -1,11 +1,10 @@
-// pages/api/deleteFormData.js
-
 import { PrismaClient } from '@prisma/client';
 import { NextApiRequest, NextApiResponse } from 'next';
 
 const prisma = new PrismaClient();
 const PASSWORD = process.env.PASSWORD; // Replace this with your actual password or store it securely in environment variables
 
+// our function to delete an item based on the id provided from client
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method === 'DELETE') {
     const { id, password } = req.body;
@@ -25,7 +24,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
       res.status(200).json(deletedNote);
     } catch (err) {
-      console.error('Error deleting data:', err);
       res.status(500).json({ error: 'Something went wrong' });
     }
   } else {
