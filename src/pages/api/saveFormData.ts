@@ -1,10 +1,10 @@
-// pages/api/saveFormData.js
 import { PrismaClient, Prisma } from '@prisma/client';
 import { NextApiRequest, NextApiResponse } from "next";
+
 const prisma = new PrismaClient();
+const PASSWORD = process.env.PASSWORD;
 
-const PASSWORD = process.env.PASSWORD; // Replace this with your actual password or store it securely in environment variables
-
+// function to create a new term
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method === "POST") {
     const { term, description, category, password } = req.body;
@@ -26,6 +26,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       })
     } catch (err) {
       // If the file does not exist or there's an error reading it, ignore and continue with an empty array
+      res.status(200).json([]);
+
     }
 
     // Append the new data as an object
@@ -37,7 +39,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     existingData.push(newData);
 
     // Write the updated array back to the file with indentation (2 spaces in this case)
-
     res.status(200).json({ message: "Form data saved successfully" });
   } else {
     res.status(405).json({ error: "Method not allowed" });
