@@ -1,3 +1,4 @@
+// in order to use the edit functionality, we need a component that has our table talking to our form
 "use client";
 import { SetStateAction, useState } from "react";
 import serviceFunctions from "@/utils/services";

@@ -1,8 +1,8 @@
-// Form.tsx
 "use client"
 import Image from "next/image";
 import { SetStateAction } from "react";
 
+// tells our app what type of data to expect with our props
 interface FormProps {
   term: string;
   description: string;
@@ -13,6 +13,7 @@ interface FormProps {
   onSubmit: (e: { preventDefault: () => void }) => void;
 }
 
+// build our form component using props to pass data
 const Form: React.FC<FormProps> = ({
   term,
   description,
@@ -23,7 +24,7 @@ const Form: React.FC<FormProps> = ({
   onSubmit,
 }) => {
 
-  
+  // return our form 
   return (
     <>
       <div>
