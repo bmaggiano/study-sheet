@@ -79,7 +79,7 @@ export default function PutTogether() {
         .then(() => {
           resetFormData()
         })
-        .catch((error) => {
+        .catch(() => {
           window.alert(
             "Incorrect password or form submission failed. Please try again."
           );
