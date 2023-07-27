@@ -4,7 +4,7 @@ import serviceFunctions from "@/utils/services";
 import Form from "@/components/form";
 import Table from "@/components/table";
 
-// Add any other properties if needed
+// tell the app what data type to expect from FormDataItem
 interface FormDataItem {
   id: string;
   term: string;
@@ -20,36 +20,41 @@ export default function PutTogether() {
   const [readableForm, setReadableForm] = useState<FormDataItem[]>([]); // Set the type for readableForm as FormDataItem[]
   const [selectedCategory, setSelectedCategory] = useState("");
 
+  // reset the form fields with the data from the editingitem
   const handleEdit = (item: FormDataItem) => {
-    //item is the FormDataItem with actual data
-    setEditingItem(item);
+    setEditingItem(item); //item is the FormDataItem with actual data
     setTerm(item.term);
     setDescription(item.description);
     setCategory(item.category);
   };
 
+  // when term variable changes, use SetStateAction to update it
   const handleTermChange = (e: {
     target: { value: SetStateAction<string> };
   }) => {
     setTerm(e.target.value);
   };
 
+  // when description changes, use SetStateAction to update description vairable
   const handleDescriptionChange = (e: {
     target: { value: SetStateAction<string> };
   }) => {
     setDescription(e.target.value);
   };
 
+  // this is used for the sorting table
   const handleCategorySearchChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const selectedCategory = e.target.value === "" ? "" : e.target.value;
     setSelectedCategory(selectedCategory);
   };
 
+  // this is used for the form category
   const handleCategoryChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const selectedCategory = e.target.value === "" ? "" : e.target.value;
     setCategory(selectedCategory);
   };
 
+  // this will be used anytime we need to reset formData
   const resetFormData = () => {
     setEditingItem(null);
     setCategory("");
@@ -57,6 +62,7 @@ export default function PutTogether() {
     setTerm("");
   }
 
+  // function to create new item, or submit the item that you're editing
   const handleSubmit = (e: { preventDefault: () => void }) => {
     e.preventDefault();
 
@@ -69,8 +75,8 @@ export default function PutTogether() {
       password: enteredPassword, // Pass the entered password as a separate property
     };
 
+    // Update existing item
     if (editingItem) {
-      // Update existing item
       formData.term = term;
       formData.description = description;
       formData.category = category;
@@ -103,6 +109,7 @@ export default function PutTogether() {
 
       <h1 className="text-white bg-black p-2">Brandon&apos;s Study Guide</h1>
 
+{/* passed in from our table.tsx with props */}
       <Table
               data={readableForm}
               selectedCategory={selectedCategory}
@@ -113,6 +120,7 @@ export default function PutTogether() {
               />
 
       <div className="page-container">
+{/* passed in from our form.tsx with props */}
         <Form
           term={term}
           description={description}
