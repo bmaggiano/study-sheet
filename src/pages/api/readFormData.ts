@@ -1,10 +1,9 @@
-// pages/api/readFormData.js
-
 import { PrismaClient } from '@prisma/client';
 import type { NextApiRequest, NextApiResponse } from 'next';
 
 const prisma = new PrismaClient();
 
+// function to fetch our form data from our database and return it to client
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method === 'GET') {
     try {
@@ -13,8 +12,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       // Respond with the formData array
       res.status(200).json(notes);
     } catch (err) {
-      console.error('Error fetching data:', err); // Add this line to log any errors
-
       // If there's an error reading data or the query fails, respond with an empty array
       res.status(200).json([]);
     }
