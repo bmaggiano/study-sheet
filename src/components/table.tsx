@@ -32,26 +32,15 @@ const Table: React.FC<TableProps> = ({
 
 
     // function to delete item with the id as an argument
-  const onDelete = (idToDelete: string) => {
+  const onDelete = (id: string) => {
     const enteredPassword = prompt("What's the magic word?");
 
-    fetch("/api/deleteFormData", {
-      method: "DELETE",
-      body: JSON.stringify({ id: idToDelete, password: enteredPassword }),
-      headers: {
-        "Content-Type": "application/json",
-      },
-    })
-      .then((response) => {
-        if (response.ok) {
-          return response.json();
-        } else {
-          throw new Error("Password validation failed");
-        }
-      })
-      .then(() => {
-        handlePageChange(currentPage);
-      })
+    const deleteData = {
+      id,
+      password: enteredPassword
+    }
+
+    serviceFunctions.deleteFormData(deleteData)
       .catch(() => {
         window.alert(
           "Incorrect password or form submission failed. Please try again."

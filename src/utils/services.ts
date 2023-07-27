@@ -1,5 +1,4 @@
-import { headers } from "next/dist/client/components/headers"
-
+// serviceFunctions file to help keep our client side code less clutered 
 const serviceFunctions = {
     getFormData: async function () {
         const response = await fetch("/api/readFormData", {
@@ -35,6 +34,26 @@ const serviceFunctions = {
     
           const data = await response.json();
           return data;
+        } catch (error) {
+          console.error("Error updating data:", error);
+          throw error;
+        }
+      },
+      deleteFormData: async function (deleteData: any) {
+        try {
+          const response = await fetch("/api/deleteFormData", {
+            method: "DELETE",
+            body: JSON.stringify(deleteData),
+            headers: {
+              "Content-Type": "application/json",
+            },
+          })
+            if (!response.ok) {
+              throw new Error("Update request failed");
+            } 
+
+            const data = await response.json();
+            return data;
         } catch (error) {
           console.error("Error updating data:", error);
           throw error;
