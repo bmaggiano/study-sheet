@@ -1,6 +1,18 @@
 "use client"
-import Image from "next/image";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog"
 import { SetStateAction } from "react";
+import { Input } from "./ui/input";
+import { Button } from "./ui/button";
+import { FormSelector } from "./formSelector";
+import { Textarea } from "./ui/textarea";
 
 // tells our app what type of data to expect with our props
 interface FormProps {
@@ -9,7 +21,7 @@ interface FormProps {
   category: string;
   onTermChange: (e: { target: { value: SetStateAction<string> } }) => void;
   onDescriptionChange: (e: { target: { value: SetStateAction<string> } }) => void;
-  onCategoryChange: (e: React.ChangeEvent<HTMLSelectElement>) => void;
+  onCategoryChange: (value: string) => void;
   onSubmit: (e: { preventDefault: () => void }) => void;
 }
 
@@ -27,61 +39,45 @@ const Form: React.FC<FormProps> = ({
   // return our form 
   return (
     <>
-      <div>
-        <h3 className="text-center font-bold">Enter Your Notes</h3>
-        <Image alt="notebook" src="/notebook.png" width={400} height={400} />
-      </div>
-
-      <div>
-        <form onSubmit={onSubmit}>
-        <div className="input-box">
-              <input
+      <Dialog>
+        <DialogTrigger asChild>
+          <Button className="bg-green-600 text-white ring-white" variant="outline">+ Add Note</Button>
+        </DialogTrigger>
+        <DialogContent className="bg-white sm:max-w-[425px]">
+          <DialogHeader>
+            <DialogTitle>Let&apos;s add a note</DialogTitle>
+            <DialogDescription>
+              Enter the term, description, and category for your note.
+            </DialogDescription>
+          </DialogHeader>
+          <div>
+            <form className="space-y-2" onSubmit={onSubmit}>
+              <Input
+                placeholder="Term"
+                required={true}
                 type="text"
-                className="term-input"
-                value={term}
                 onChange={onTermChange}
-                required
+                value={term}
               />
-              <label className="term-label">Term</label>
-            </div>
-
-            <div className="input-box area">
-              <textarea
-                className="term-input text-area"
-                rows={7}
-                value={description}
+              <Textarea
+                placeholder="Description"
+                required={true}
                 onChange={onDescriptionChange}
-                required
+                value={description}
               />
-              <label className="term-label">Description</label>
-            </div>
-
-            <div className="input-box">
-              <select
-                className="term-input pb-2"
-                required
-                onChange={onCategoryChange}
-                value={category || ""}
-              >
-                <option value="" disabled hidden></option>
-                <option value="General Terms">General Terms</option>
-                <option value="Javascript">Javascript</option>
-                <option value="Vscode">Vscode</option>
-                <option value="NextJs">NextJs</option>
-                <option value="Node">Node</option>
-                <option value="Leetcode">Leetcode</option>
-                <option value="Other">Other</option>
-              </select>
-              <label className="term-label">Category</label>
-            </div>
-
-            <div className="submit-container">
-              <input className="submit" type="submit" />
-            </div>
-        </form>
-      </div>
+              <FormSelector value={category} onChange={onCategoryChange} />
+              <div className="flex justify-end">
+                <Button type="submit">Add Note</Button>
+              </div>
+            </form>
+          </div>
+        </DialogContent>
+      </Dialog>
     </>
   );
 };
 
 export default Form;
+
+
+
